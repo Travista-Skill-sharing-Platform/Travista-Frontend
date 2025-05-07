@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { IoMdAdd } from "react-icons/io";
+import Logo from "./../../Components/NavBar/img/logo.png";
+
 function UserRegister() {
     const [formData, setFormData] = useState({
         fullname: '',
@@ -62,7 +63,19 @@ function UserRegister() {
                     </div>
                     <div className="new_content_reg">
                         <div className='login_content'>
-                            <p className="Auth_heading">Create your account #</p>
+                            <div
+                                    className="logoo"
+                                    style={{
+                                      backgroundImage: `url(${Logo})`,
+                                      width: "300px",
+                                      height: "100px",
+                                      backgroundSize: "contain",
+                                      backgroundPosition: "center",
+                                      backgroundRepeat: "no-repeat",
+                                      margin: "0 auto",
+                                    }}
+                                  />
+                            <p className="Auth_heading">To get your passprt to the NATURE, Please SIGN UP!</p>
                         </div>
                         <br/>
                         <form onSubmit={handleSubmit} className="Auth_form_reg">

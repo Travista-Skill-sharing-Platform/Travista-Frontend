@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './user.css'
 import GoogalLogo from './img/glogo.png'
+import Logo from "./../../Components/NavBar/img/logo.png";
+
 function UserLogin() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const navigate = useNavigate();
@@ -43,8 +45,20 @@ function UserLogin() {
         </div>
         <div className="Auth_content new_content">
           <div className='login_content'>
-            <p className="Auth_heading">Find Your Next Adventure #</p>
-            <p className="Auth_subheading">The Goal Of Life Is Leving In Agreement With Nature! Please login in to your account.</p>
+          <div
+        className="logoo"
+        style={{
+          backgroundImage: `url(${Logo})`,
+          width: "300px",
+          height: "100px",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          margin: "0 auto",
+        }}
+      />
+            
+            <p className="Auth_subheading">The Goal Of Life Is Living In Agreement With Nature! Please login in to your account.</p>
           </div>
           <form onSubmit={handleSubmit} className="Auth_form">
             <div className="Auth_formGroup">
