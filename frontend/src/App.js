@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { Route, Routes, Navigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import AddNewPost from "./Pages/PostManagement/AddNewPost";
+
 
 function App() {
+
+
   return (
-    <div className="App">
-      <h1>Hello, React!</h1>
-      <p>Welcome to your React app.</p>
+    <div>
+      <React.Fragment>
+        <Routes>
+          <Route
+            path="/addNewPost"
+            element={
+              <ProtectedRoute>
+                <AddNewPost />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </React.Fragment>
     </div>
   );
 }
