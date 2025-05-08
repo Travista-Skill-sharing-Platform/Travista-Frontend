@@ -70,3 +70,36 @@
     border-radius: 3px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  .com_data_card_in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+  }
+  .tit_not {
+    font-size: 22px;
+    text-transform: capitalize;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .tit_per {
+    color: #7a7979;
+    text-transform: capitalize;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .user_card {
+    width: 100%;
+    border: 1px solid #7a7979;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+  .names {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
