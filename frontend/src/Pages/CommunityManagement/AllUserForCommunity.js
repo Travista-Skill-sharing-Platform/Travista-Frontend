@@ -8,21 +8,19 @@ function AllUserForCommunity() {
   const [communityUsers, setCommunityUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const loggedInUserId = '1'; // Hardcoded logged-in user ID for the frontend
+  const loggedInUserId = '1'; 
 
   useEffect(() => {
-    // Hardcoded community ID for frontend use
     setCommunityId('1');
   }, []);
 
   useEffect(() => {
-    // Hardcoded list of users for frontend use
     setUsers([
       { id: '1', fullname: 'User 1' },
       { id: '2', fullname: 'User 2' },
       { id: '3', fullname: 'User 3' },
     ]);
-    setCommunityUsers(['1']); // Assume user with ID '1' is already in the community
+    setCommunityUsers(['1']); 
   }, []);
 
   const addUserToCommunity = (userId) => {
@@ -31,7 +29,7 @@ function AllUserForCommunity() {
   };
 
   const filteredUsers = users
-    .filter((user) => !communityUsers.includes(user.id)) // Exclude users already in the community
+    .filter((user) => !communityUsers.includes(user.id)) 
     .filter((user) => user.fullname.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
