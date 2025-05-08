@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function AllNoties() {
+function AllNotices() {
   const { communityId } = useParams();
   const [notices, setNotices] = useState([]);
 
@@ -39,4 +39,4 @@ function AllNoties() {
   );
 }
 
-export default AllNoties;
+export default AllNotices;

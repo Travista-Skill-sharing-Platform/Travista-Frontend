@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
 
-function AddNoties() {
+function AddNotices() {
     const [communityId, setCommunityId] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -98,4 +98,4 @@ function AddNoties() {
     );
 }
 
-export default AddNoties;
+export default AddNotices;

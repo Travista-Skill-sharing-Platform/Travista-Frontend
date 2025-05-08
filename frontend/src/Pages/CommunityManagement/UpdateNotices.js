@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
 
-function UpdateNoties() {
+function UpdateNotices() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -92,4 +92,4 @@ function UpdateNoties() {
   );
 }
 
-export default UpdateNoties;
+export default UpdateNotices;

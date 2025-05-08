@@ -73,7 +73,7 @@ function MyCommunity() {
                         ) : (
                             <div className='not_found_box'>
                                 <div className='not_found_img'></div>
-                                <p className='not_found_msg'>No Community found. Please create a new Quest.</p>
+                                <p className='not_found_msg'>No Community found. Please create a new Community.</p>
                                 <button className='not_found_btn' onClick={() => (window.location.href = '/createCommunity')}>Create Community</button>
                             </div>
                         )}

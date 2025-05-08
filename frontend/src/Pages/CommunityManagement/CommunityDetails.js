@@ -165,7 +165,7 @@ function CommunityDetails() {
             </div>
             <div className='com_con_card_fill'>
               <div className='com_data_card'>
-                <p className='names'>Notice</p>
+                <p className='names'>Notices</p>
                 <div className='com_data_card_in'>
                   {notices.length > 0 ? (
                     notices.map((notice) => (

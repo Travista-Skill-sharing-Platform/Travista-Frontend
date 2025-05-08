@@ -14,12 +14,12 @@ import UpdateQuest from "./Pages/QuizManagement/UpdateQuest";
 import AttemptQuest from "./Pages/QuizManagement/AttemptQuest";
 import MyQuest from "./Pages/QuizManagement/MyQuest";
 import AllCommunity from "./Pages/CommunityManagement/AllCommunity";
-import AddNoties from "./Pages/CommunityManagement/AddNoties";
-import AllNoties from "./Pages/CommunityManagement/AllNoties";
+import AddNotices from "./Pages/CommunityManagement/AddNotices";
+import AllNotices from "./Pages/CommunityManagement/AllNotices";
 import CreateCommunity from "./Pages/CommunityManagement/CreateCommunity";
 import CommunityDetails from "./Pages/CommunityManagement/CommunityDetails";
 import AllUserForCommunity from "./Pages/CommunityManagement/AllUserForCommunity";
-import UpdateNoties from "./Pages/CommunityManagement/UpdateNoties";
+import UpdateNotices from "./Pages/CommunityManagement/UpdateNotices";
 import MyCommunity from "./Pages/CommunityManagement/MyCommunity";
 
 function ProtectedRoute({ children }) {
@@ -149,7 +149,7 @@ function App() {
             path="/addNoties/:id"
             element={
               <ProtectedRoute>
-                <AddNoties />
+                <AddNotices />
               </ProtectedRoute>
             }
           />
@@ -158,7 +158,7 @@ function App() {
             path="/allNoties/:communityId"
             element={
               <ProtectedRoute>
-                <AllNoties />
+                <AllNotices />
               </ProtectedRoute>
             }
           />
@@ -190,7 +190,7 @@ function App() {
             path="/updateNoties/:id"
             element={
               <ProtectedRoute>
-                <UpdateNoties />
+                <UpdateNotices />
               </ProtectedRoute>
             }
           />
