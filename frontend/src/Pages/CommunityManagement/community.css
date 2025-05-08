@@ -5,15 +5,6 @@
     padding: 16px;
     margin-bottom: 16px;
   }
-  .u_fill_card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    margin-bottom: 16px;
-    width: 600px;
-    margin: 0 auto;
-  }
   .search_input {
     width: 100%;
     font-size: 17px;
@@ -21,4 +12,61 @@
     border-radius: 3px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+  }
+  .user_card{
+    width: 100%;
+    border: 1px solid #7a7979;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+  }
+  .addbtn{
+    background-color: #00885c;
+    color: #fff;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .com_name {
+    font-size: 30px;
+    text-transform: capitalize;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .com_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .com_card_hed {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .com_data_card {
+    flex: 1;
+    padding: 25px;
+  }
+  .com_con_card_fill {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 25px;
+  }
+  .notice_card {
+    border: 1px solid #7a7979;
+    padding: 8px;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
