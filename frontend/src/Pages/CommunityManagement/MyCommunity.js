@@ -1,22 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
+import { IoIosCreate } from "react-icons/io";
 
-function UpdateNotices() {
-  const { id } = useParams();
+function MyCommunity() {
+  const [communities, setCommunities] = useState([]);
+  const userId = '1'; // Hardcoded logged-in user ID for frontend use
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
 
   useEffect(() => {
-    // Hardcoded notice details for frontend use
-    setTitle('Sample Notice Title');
-    setContent('This is the content of the sample notice.');
-  }, [id]);
+    // Hardcoded communities data for frontend use
+    setCommunities([
+      { id: '1', name: 'Community 1' },
+      { id: '2', name: 'Community 2' },
+      { id: '3', name: 'Community 3' },
+    ]);
+  }, [userId]);
 
-  const handleUpdate = () => {
-    alert('Notice updated successfully.');
-    navigate(-1);
+  const handleLeaveCommunity = (communityId) => {
+    const confirmLeave = window.confirm("Are you sure you want to leave this community?");
+    if (!confirmLeave) return;
+
+    // Simulate the leaving process by filtering out the community from the list
+    setCommunities((prevCommunities) =>
+      prevCommunities.filter((community) => community.id !== communityId)
+    );
+    alert("You have left the community successfully.");
   };
 
   return (
@@ -24,38 +33,27 @@ function UpdateNotices() {
       <NavBar />
       <div className='continer_full'>
         <div className='continer'>
-          <div className='continSection'>
-            <div className="from_continer">
-              <p className="Auth_heading">Update Notice</p>
-              <form className='from_data'
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleUpdate();
-                }}
-              >
-                <div className="Auth_formGroup">
-                  <label className="Auth_label">Title</label>
-                  <input
-                    className="Auth_input"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                  />
+          <div className='create_post' onClick={() => (window.location.href = '/createCommunity')}>
+            <IoIosCreate />
+          </div>
+          <div className='quiz_concard'>
+            {communities.length > 0 ? (
+              communities.map((community) => (
+                <div key={community.id} className="quiz_card">
+                  <h3 className='qiz_tit'>{community.name}</h3>
+                  <div className='action_con_Card_q'>
+                    <button className='upbtn' onClick={() => navigate(`/communityDetails/${community.id}`)}>View</button>
+                    <button className='dltbn' onClick={() => handleLeaveCommunity(community.id)}>Leave</button>
+                  </div>
                 </div>
-                <div className="Auth_formGroup">
-                  <label className="Auth_label">Content</label>
-                  <textarea
-                    className="Auth_input"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    required
-                    rows={5}
-                  />
-                </div>
-                <button className="Auth_button" type="submit">Update</button>
-              </form>
-            </div>
+              ))
+            ) : (
+              <div className='not_found_box'>
+                <div className='not_found_img'></div>
+                <p className='not_found_msg'>No Community found. Please create a new Community.</p>
+                <button className='not_found_btn' onClick={() => (window.location.href = '/createCommunity')}>Create Community</button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -63,4 +61,4 @@ function UpdateNotices() {
   );
 }
 
-export default UpdateNotices;
+export default MyCommunity;
