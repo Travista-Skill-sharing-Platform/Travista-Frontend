@@ -35,6 +35,30 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/communityDetails/:communityId"
+            element={
+              <ProtectedRoute>
+                <CommunityDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/communityUsers/:id"
+            element={
+              <ProtectedRoute>
+                <AllUserForCommunity />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updateNoties/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateNotices />
+              </ProtectedRoute>
+            }
+          />
           
         </Routes>
       </React.Fragment>
