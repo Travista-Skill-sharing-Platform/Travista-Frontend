@@ -49,21 +49,34 @@ function AllPost() {
     setShowMyPosts(!showMyPosts);
   };
 
-  const handleLike = (postId) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              likes: {
-                ...post.likes,
-                [loggedInUserID]: !post.likes?.[loggedInUserID],
-              },
-            }
-          : post
-      )
-    );
-  };
+// Like
+  const handleLike = async (postId) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to like a post.');
+        return;
+      }
+      try {
+        const response = await axios.put(`http://localhost:8080/posts/${postId}/like`, null, {
+          params: { userID },
+        });
+
+
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, likes: response.data.likes } : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId ? { ...post, likes: response.data.likes } : post
+          )
+        );
+      } catch (error) {
+        console.error('Error liking post:', error);
+      }
+    };
 
   const handleFollowToggle = (postOwnerID) => {
     if (followedUsers.includes(postOwnerID)) {
