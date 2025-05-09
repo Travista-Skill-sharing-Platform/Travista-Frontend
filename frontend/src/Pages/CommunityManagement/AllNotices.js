@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 function AllNotices() {
@@ -6,11 +6,20 @@ function AllNotices() {
   const [notices, setNotices] = useState([]);
 
   useEffect(() => {
-    // Hardcoded notices data for frontend use
-    setNotices([
-      { id: 1, title: 'Notice 1', content: 'Content 1' },
-      { id: 2, title: 'Notice 2', content: 'Content 2' },
-    ]);
+    const fetchNotices = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/communities/${communityId}/notices`);
+        if (response.ok) {
+          const data = await response.json();
+          setNotices(data);
+        } else {
+          alert('Failed to fetch notices.');
+        }
+      } catch (error) {
+        console.error('Error fetching notices:', error);
+      }
+    };
+    fetchNotices();
   }, [communityId]);
 
   return (
