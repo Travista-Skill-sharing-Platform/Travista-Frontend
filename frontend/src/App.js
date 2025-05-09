@@ -60,6 +60,22 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/allPost"
+             element={
+               <ProtectedRoute>
+                 <AllPost />
+               </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/updatePost/:id"
+              element={
+                <ProtectedRoute>
+                  <UpdatePost />
+                </ProtectedRoute>
+              }
+            />
         </Routes>
       </React.Fragment>
     </div>
