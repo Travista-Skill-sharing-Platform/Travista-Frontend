@@ -1,43 +1,130 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
-import './community.css';
-
+import './community.css'
 function CommunityDetails() {
   const { communityId } = useParams();
   const navigate = useNavigate();
   const [notices, setNotices] = useState([]);
   const [users, setUsers] = useState([]);
   const [ownerId, setOwnerId] = useState(null);
-  const [communityName, setCommunityName] = useState(''); 
-  const [userNames, setUserNames] = useState({});
+  const [communityName, setCommunityName] = useState(''); // Added state for community name
+  const [userNames, setUserNames] = useState({}); // State to store user names
 
   useEffect(() => {
-    // Hardcoded data for frontend use
-    setCommunityName('Community 1');
-    setOwnerId('1');
-    setNotices([
-      { id: 1, title: 'Notice 1', content: 'Content 1', userId: '1' },
-      { id: 2, title: 'Notice 2', content: 'Content 2', userId: '2' },
-    ]);
-    setUsers([
-      { id: '1', fullname: 'User 1' },
-      { id: '2', fullname: 'User 2' },
-      { id: '3', fullname: 'User 3' },
-    ]);
+    const fetchNotices = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/communities/${communityId}/notices`);
+        if (response.ok) {
+          const data = await response.json();
+          setNotices(data);
+        } else {
+          alert('Failed to fetch notices.');
+        }
+      } catch (error) {
+        console.error('Error fetching notices:', error);
+      }
+    };
+    fetchNotices();
   }, [communityId]);
 
   useEffect(() => {
-    const userNamesMap = { '1': 'User 1', '2': 'User 2' };
-    setUserNames(userNamesMap);
+    const fetchCommunityUsers = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/communities/${communityId}/users`);
+        if (response.ok) {
+          const data = await response.json();
+          setUsers(data);
+        } else {
+          alert('Failed to fetch community users.');
+        }
+      } catch (error) {
+        console.error('Error fetching community users:', error);
+      }
+    };
+    fetchCommunityUsers();
+  }, [communityId]);
+
+  useEffect(() => {
+    const fetchCommunityDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/communities/${communityId}`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Community Details:', data);
+          if (data.ownerId !== undefined) {
+            setOwnerId(data.ownerId);
+          } else {
+            console.error('Owner ID is missing in the response:', data);
+          }
+          if (data.name) {
+            setCommunityName(data.name);
+          } else {
+            console.error('Community name is missing in the response:', data);
+          }
+        } else {
+          console.error('Failed to fetch community details. Status:', response.status);
+          alert('Failed to fetch community details.');
+        }
+      } catch (error) {
+        console.error('Error fetching community details:', error);
+      }
+    };
+    fetchCommunityDetails();
+  }, [communityId]);
+
+  useEffect(() => {
+    const fetchUserNames = async () => {
+      const uniqueUserIds = [...new Set(notices.map((notice) => notice.userId))];
+      const userNamesMap = {};
+
+      for (const userId of uniqueUserIds) {
+        try {
+          const response = await fetch(`http://localhost:8080/user/${userId}`);
+          if (response.ok) {
+            const user = await response.json();
+            userNamesMap[userId] = user.fullname;
+          } else {
+            console.error(`Failed to fetch user with ID: ${userId}`);
+          }
+        } catch (error) {
+          console.error(`Error fetching user with ID: ${userId}`, error);
+        }
+      }
+
+      setUserNames(userNamesMap);
+    };
+
+    if (notices.length > 0) {
+      fetchUserNames();
+    }
   }, [notices]);
 
-  const userId = '1'; // Hardcoded logged-in user ID for frontend use
+  const userId = localStorage.getItem('userID');
 
-  const handleDeleteNotice = (noticeId) => {
-    setNotices((prevNotices) => prevNotices.filter((notice) => notice.id !== noticeId));
-    alert('Notice deleted successfully.');
+  const handleDeleteNotice = async (noticeId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this notice?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/communities/${communityId}/notices/${noticeId}`,
+        { method: "DELETE" }
+      );
+
+      if (response.ok) {
+        setNotices((prevNotices) => prevNotices.filter((notice) => notice.id !== noticeId));
+        alert("Notice deleted successfully.");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || "Failed to delete the notice.");
+      }
+    } catch (error) {
+      console.error("Error deleting notice:", error);
+      alert("Network error while deleting the notice.");
+    }
   };
+
 
   return (
     <div>
@@ -47,6 +134,7 @@ function CommunityDetails() {
           <div className='com_fill_card'>
             <div className='com_card_hed'>
               <p className='com_name'>{communityName || 'Loading...'}</p>
+
               <div className='com_btn'>
                 <button
                   className='upbtn'
@@ -59,6 +147,7 @@ function CommunityDetails() {
                 </button>
                 {userId && ownerId && userId === ownerId ? (
                   <button
+
                     className='upbtn'
                     onClick={() => {
                       localStorage.setItem('selectedCommunityId', communityId);
@@ -66,13 +155,13 @@ function CommunityDetails() {
                     }}
                   >
                     Add Users
-                  </button>
-                ) : ownerId === null ? (
-                  <p>Loading community details...</p>
-                ) : (
+                  </button>) : ownerId === null ? (
+                    <p>Loading community details...</p>
+                  ) : (
                   <p></p>
                 )}
               </div>
+
             </div>
             <div className='com_con_card_fill'>
               <div className='com_data_card'>
