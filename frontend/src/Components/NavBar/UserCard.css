@@ -1,0 +1,35 @@
+.user-card {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  width: 300px;
+  height: 99vh;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 10;
+  transition: right 0.3s ease-in-out;
+}
+.user-card-actions{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  flex-direction: column;
+}
+.action_item{
+  font-size: 18px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+}
+.user-card p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
