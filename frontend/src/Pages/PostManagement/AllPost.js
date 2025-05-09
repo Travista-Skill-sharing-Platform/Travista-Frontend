@@ -31,6 +31,23 @@ function AllPost() {
     setFilteredPosts(dummyPosts);
   }, []);
 
+//Follow
+ useEffect(() => {
+    const fetchFollowedUsers = async () => {
+      const userID = localStorage.getItem('userID');
+      if (userID) {
+        try {
+          const response = await axios.get(`http://localhost:8080/user/${userID}/followedUsers`);
+          setFollowedUsers(response.data);
+        } catch (error) {
+          console.error('Error fetching followed users:', error);
+        }
+      }
+    };
+
+    fetchFollowedUsers();
+  }, []);
+
   const handleDelete = (postId) => {
     setPosts(posts.filter((post) => post.id !== postId));
     setFilteredPosts(filteredPosts.filter((post) => post.id !== postId));
@@ -78,13 +95,27 @@ function AllPost() {
       }
     };
 
-  const handleFollowToggle = (postOwnerID) => {
-    if (followedUsers.includes(postOwnerID)) {
-      setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
-    } else {
-      setFollowedUsers([...followedUsers, postOwnerID]);
-    }
-  };
+// Follow
+  const handleFollowToggle = async (postOwnerID) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to follow/unfollow users.');
+        return;
+      }
+      try {
+        if (followedUsers.includes(postOwnerID)) {
+
+          await axios.put(`http://localhost:8080/user/${userID}/unfollow`, { unfollowUserID: postOwnerID });
+          setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
+        } else {
+
+          await axios.put(`http://localhost:8080/user/${userID}/follow`, { followUserID: postOwnerID });
+          setFollowedUsers([...followedUsers, postOwnerID]);
+        }
+      } catch (error) {
+        console.error('Error toggling follow state:', error);
+      }
+    };
 
   const handleAddComment = (postId) => {
     const content = newComment[postId]?.trim();
