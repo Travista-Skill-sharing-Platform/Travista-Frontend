@@ -15,14 +15,15 @@ function AllPost() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]); // For filtering posts
   const [postOwners, setPostOwners] = useState({}); // Map of userID to fullName
-  const [showMyPosts, setShowMyPosts] = useState(false);
+  const [showMyPosts, setShowMyPosts] = useState(false); // Toggle for "My Posts"
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const [followedUsers, setFollowedUsers] = useState([]);
-  const [newComment, setNewComment] = useState({});
-  const [editingComment, setEditingComment] = useState({});
+
+  const [followedUsers, setFollowedUsers] = useState([]); // State to track followed users
+  const [newComment, setNewComment] = useState({}); // State for new comments
+  const [editingComment, setEditingComment] = useState({}); // State for editing comments
   const navigate = useNavigate();
-  const loggedInUserID = '1';
+  const loggedInUserID = localStorage.getItem('userID'); // Get the logged-in user's ID
 
   useEffect(() => {
       // Fetch all posts from the backend
@@ -60,10 +61,22 @@ function AllPost() {
       fetchPosts();
     }, []);
 
-  const handleDelete = (postId) => {
-    setPosts(posts.filter((post) => post.id !== postId));
-    setFilteredPosts(filteredPosts.filter((post) => post.id !== postId));
-  };
+    const handleDelete = async (postId) => {
+      const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+      if (!confirmDelete) {
+        return;
+      }
+
+      try {
+        await axios.delete(`http://localhost:8080/posts/${postId}`);
+        alert('Post deleted successfully!');
+        setPosts(posts.filter((post) => post.id !== postId));
+        setFilteredPosts(filteredPosts.filter((post) => post.id !== postId));
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        alert('Failed to delete post.');
+      }
+    };
 
   const handleUpdate = (postId) => {
     navigate(`/updatePost/${postId}`);
