@@ -117,30 +117,41 @@ function AllPost() {
       }
     };
 
-  const handleAddComment = (postId) => {
-    const content = newComment[postId]?.trim();
-    if (!content) return;
+// Add comment
+  const handleAddComment = async (postId) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to comment.');
+        return;
+      }
+      const content = newComment[postId] || '';
+      if (!content.trim()) {
+        alert('Comment cannot be empty.');
+        return;
+      }
+      try {
+        const response = await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
+          userID,
+          content,
+        });
 
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: [
-                ...post.comments,
-                {
-                  id: Date.now(),
-                  userID: loggedInUserID,
-                  userFullName: 'You',
-                  content,
-                },
-              ],
-            }
-          : post
-      )
-    );
-    setNewComment({ ...newComment, [postId]: '' });
-  };
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, comments: response.data.comments } : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId ? { ...post, comments: response.data.comments } : post
+          )
+        );
+
+        setNewComment({ ...newComment, [postId]: '' });
+      } catch (error) {
+        console.error('Error adding comment:', error);
+      }
+    };
 
   const handleDeleteComment = (postId, commentId) => {
     setPosts((prev) =>
