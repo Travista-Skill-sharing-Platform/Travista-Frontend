@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function AddNewPost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [media, setMedia] = useState([]);
   const [mediaPreviews, setMediaPreviews] = useState([]);
+  const userID = localStorage.getItem('userID');
 
   const handleMediaChange = (e) => {
     const files = Array.from(e.target.files);
-    const maxFileSize = 50 * 1024 * 1024; // 50MB
+    const maxFileSize = 50 * 1024 * 1024;
 
     let imageCount = 0;
     let videoCount = 0;
@@ -58,9 +60,25 @@ function AddNewPost() {
     setMediaPreviews(previews);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Post validated and ready to be submitted (no backend connected).');
+    const formData = new FormData();
+    formData.append('userID', userID);
+    formData.append('title', title);
+    formData.append('description', description);
+    media.forEach((file) => formData.append('mediaFiles', file));
+
+    try {
+      await axios.post('http://localhost:8080/posts', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      alert('Post created successfully!');
+      window.location.href = '/allPost';
+    } catch (error) {
+      console.error(error);
+      alert('Failed to create post.');
+      window.location.reload();
+    }
   };
 
   return (
@@ -103,11 +121,7 @@ function AddNewPost() {
                           Your browser does not support the video tag.
                         </video>
                       ) : (
-                        <img
-                          className='media_file_se'
-                          src={preview.url}
-                          alt={`Media Preview ${index}`}
-                        />
+                        <img className='media_file_se' src={preview.url} alt={`Media Preview ${index}`} />
                       )}
                     </div>
                   ))}
