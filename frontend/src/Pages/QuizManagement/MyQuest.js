@@ -7,6 +7,42 @@ function MyQuest() {
     const navigate = useNavigate();
     const userID = localStorage.getItem('userID');
 
+useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/quizzes');
+                const data = await response.json();
+                const userQuizzes = data.filter((quiz) => quiz.userID === userID);
+                setQuizzes(userQuizzes);
+            } catch (error) {
+                console.error('Error fetching quizzes:', error);
+            }
+        };
+        fetchQuizzes();
+    }, [userID]);
+
+    const deleteQuiz = async (id) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this quiz?');
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/quizzes/${id}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                alert('Quiz deleted successfully!');
+                setQuizzes(quizzes.filter((quiz) => quiz.id !== id));
+            } else {
+                alert('Failed to delete quiz.');
+            }
+        } catch (error) {
+            console.error('Error deleting quiz:', error);
+        }
+    };
+
+
  return (
         <div>
             <NavBar />
