@@ -6,20 +6,41 @@ function CreateCommunity() {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    // Hardcoded userId for frontend use
-    setUserId('1');
+    const storedUserId = localStorage.getItem('userID'); // Fetch userId from local storage
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      alert('No user ID found in local storage!');
+    }
   }, []);
 
-  const handleCreateCommunity = () => {
+  const handleCreateCommunity = async () => {
     if (!userId) {
       alert('User ID is required!');
       return;
     }
 
-    // Simulate the community creation process
-    alert('Community created successfully!');
-    setName('');
-    window.location.href = '/myCommunity';
+    try {
+      const response = await fetch('http://localhost:8080/communities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, userId }), // Send userId as ownerId
+      });
+      if (response.ok) {
+        alert('Community created successfully!');
+        setName('');
+        window.location.href='/myCommunity'
+      } else {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        alert(`Failed to create community: ${errorData.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error creating community:', error);
+      alert('An error occurred while creating the community.');
+    }
   };
 
   return (
@@ -40,9 +61,9 @@ function CreateCommunity() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
-                  <br />
-                </div>
-                <button className="Auth_button" onClick={handleCreateCommunity}>Create</button>
+                  <br/></div>
+                  <button className="Auth_button" onClick={handleCreateCommunity}>Create</button>
+                
               </div>
             </div>
           </div>
