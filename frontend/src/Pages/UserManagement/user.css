@@ -1,0 +1,221 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.Auth_container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Auth_innerContainer {
+  background-color: #46d3a6;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  justify-content: space-between;
+  width: 1000px;
+  height: 650px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.Auth_content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  flex-direction: column;
+}
+.Auth_content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  flex-direction: column;
+}
+.Auth_content_reg {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+}
+.Auth_heading {
+  width: 100%;
+  font-weight: 600;
+  font-size: 30px;
+}
+.Auth_signupPrompt {
+  text-align: end;
+}
+.Auth_subheading,
+.Auth_signupPrompt {
+  font-weight: 400;
+  font-size: 15px;
+  color: #5d5d5d;
+}
+.Auth_content_img {
+  background-image: url("./img/logbk.png");
+  background-size: cover;
+  background-position: center;
+  width: 160%;
+  height: 620px;
+  border-radius: 8px;
+}
+.Auth_content_img_reg {
+  background-image: url("./img/regbk.png");
+  background-size: cover;
+  background-position: center;
+  width: 160%;
+  height: 620px;
+  border-radius: 8px;
+}
+.from_con_add{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.new_content {
+  width: 100%;
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.new_content_reg{
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.Auth_form {
+  width: 100%;
+}
+.Auth_form_reg {
+  background-color: white;
+}
+
+.Auth_formGroup {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.Auth_label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.Auth_input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cacaca;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+}
+.skil_addbtn {
+  display: flex;
+  width: 100%;
+  gap: 18px;
+}
+.Auth_button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(90deg, #1bd6b1 0%, #00885C 100%);
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Auth_button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.Auth_signupPrompt {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.Auth_signupLink {
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+}
+.add_s_btn {
+  padding: 10px;
+  background: linear-gradient(90deg, #1bd6b1 0%, #00885C 100%);
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 16px;
+  font-size: 43px;
+  cursor: pointer;
+}
+.Auth_googleButton {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #474545;
+  border-radius: 80px;
+  color: #474545;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.skil_dis_con{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.glogo {
+  width: 25px;
+}
+.Auth_googleButton:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.Auth_signupLink:hover {
+  color: #5d5d5d;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
