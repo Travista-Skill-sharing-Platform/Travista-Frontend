@@ -5,31 +5,77 @@ import NavBar from '../../Components/NavBar/NavBar';
 function AllUserForCommunity() {
   const [communityId, setCommunityId] = useState('');
   const [users, setUsers] = useState([]);
-  const [communityUsers, setCommunityUsers] = useState([]);
+  const [communityUsers, setCommunityUsers] = useState([]); // State to store community users
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const loggedInUserId = '1'; 
+  const loggedInUserId = localStorage.getItem('userID');
 
   useEffect(() => {
-    setCommunityId('1');
+    const storedCommunityId = localStorage.getItem('selectedCommunityId');
+    if (storedCommunityId) {
+      setCommunityId(storedCommunityId);
+    } else {
+      alert('No community ID found in local storage!');
+    }
   }, []);
 
   useEffect(() => {
-    setUsers([
-      { id: '1', fullname: 'User 1' },
-      { id: '2', fullname: 'User 2' },
-      { id: '3', fullname: 'User 3' },
-    ]);
-    setCommunityUsers(['1']); 
-  }, []);
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/user');
+        if (response.ok) {
+          const data = await response.json();
+          const filteredUsers = data.filter((user) => user.id !== loggedInUserId);
+          setUsers(filteredUsers);
+        } else {
+          alert('Failed to fetch users.');
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, [loggedInUserId]);
 
-  const addUserToCommunity = (userId) => {
-    alert('User added to community successfully.');
-    navigate(`/communityDetails/${communityId}`);
+  useEffect(() => {
+    const fetchCommunityUsers = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/communities/${communityId}/users`);
+        if (response.ok) {
+          const data = await response.json();
+          setCommunityUsers(data.map((user) => user.id)); // Store only user IDs
+        } else {
+          alert('Failed to fetch community users.');
+        }
+      } catch (error) {
+        console.error('Error fetching community users:', error);
+      }
+    };
+    if (communityId) {
+      fetchCommunityUsers();
+    }
+  }, [communityId]);
+
+  const addUserToCommunity = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/communities/${communityId}/addUser`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      if (response.ok) {
+        alert('User added to community successfully.');
+        navigate(`/communityDetails/${communityId}`);
+      } else {
+        alert('Failed to add user to community.');
+      }
+    } catch (error) {
+      console.error('Error adding user to community:', error);
+    }
   };
 
   const filteredUsers = users
-    .filter((user) => !communityUsers.includes(user.id)) 
+    .filter((user) => !communityUsers.includes(user.id)) // Exclude users already in the community
     .filter((user) => user.fullname.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
