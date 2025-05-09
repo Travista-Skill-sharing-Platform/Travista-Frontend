@@ -33,35 +33,25 @@ function AllPost() {
           setPosts(response.data);
           setFilteredPosts(response.data); // Initially show all posts
 
-          // Fetch post owners' names
-          const userIDs = [...new Set(response.data.map((post) => post.userID))]; // Get unique userIDs
-          const ownerPromises = userIDs.map((userID) =>
-            axios.get(`http://localhost:8080/user/${userID}`)
-              .then((res) => ({
-                userID,
-                fullName: res.data.fullname,
-              }))
-              .catch((error) => {
-                console.error(`Error fetching user details for userID ${userID}:`, error);
-                return { userID, fullName: 'Anonymous' };
-              })
-          );
-          const owners = await Promise.all(ownerPromises);
-          const ownerMap = owners.reduce((acc, owner) => {
-            acc[owner.userID] = owner.fullName;
-            return acc;
-          }, {});
-          console.log('Post Owners Map:', ownerMap); // Debug log to verify postOwners map
-          setPostOwners(ownerMap);
+//Follow
+ useEffect(() => {
+    const fetchFollowedUsers = async () => {
+      const userID = localStorage.getItem('userID');
+      if (userID) {
+        try {
+          const response = await axios.get(`http://localhost:8080/user/${userID}/followedUsers`);
+          setFollowedUsers(response.data);
         } catch (error) {
-          console.error('Error fetching posts:', error); // Log error for fetching posts
+          console.error('Error fetching followed users:', error);
         }
-      };
+      }
+    };
 
-      fetchPosts();
-    }, []);
+    fetchFollowedUsers();
+  }, []);
 
-    const handleDelete = async (postId) => {
+// Delete Comment
+   const handleDelete = async (postId) => {
       const confirmDelete = window.confirm('Are you sure you want to delete this post?');
       if (!confirmDelete) {
         return;
@@ -78,9 +68,10 @@ function AllPost() {
       }
     };
 
+// Update comments
   const handleUpdate = (postId) => {
-    navigate(`/updatePost/${postId}`);
-  };
+      navigate(`/updatePost/${postId}`);
+    };
 
   const handleMyPostsToggle = () => {
     if (showMyPosts) {
@@ -91,83 +82,163 @@ function AllPost() {
     setShowMyPosts(!showMyPosts);
   };
 
-  const handleLike = (postId) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              likes: {
-                ...post.likes,
-                [loggedInUserID]: !post.likes?.[loggedInUserID],
-              },
-            }
-          : post
-      )
-    );
-  };
+// Like
+  const handleLike = async (postId) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to like a post.');
+        return;
+      }
+      try {
+        const response = await axios.put(`http://localhost:8080/posts/${postId}/like`, null, {
+          params: { userID },
+        });
 
-  const handleFollowToggle = (postOwnerID) => {
-    if (followedUsers.includes(postOwnerID)) {
-      setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
-    } else {
-      setFollowedUsers([...followedUsers, postOwnerID]);
-    }
-  };
 
-  const handleAddComment = (postId) => {
-    const content = newComment[postId]?.trim();
-    if (!content) return;
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, likes: response.data.likes } : post
+          )
+        );
 
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: [
-                ...post.comments,
-                {
-                  id: Date.now(),
-                  userID: loggedInUserID,
-                  userFullName: 'You',
-                  content,
-                },
-              ],
-            }
-          : post
-      )
-    );
-    setNewComment({ ...newComment, [postId]: '' });
-  };
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId ? { ...post, likes: response.data.likes } : post
+          )
+        );
+      } catch (error) {
+        console.error('Error liking post:', error);
+      }
+    };
 
-  const handleDeleteComment = (postId, commentId) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: post.comments.filter((c) => c.id !== commentId),
-            }
-          : post
-      )
-    );
-  };
+// Follow
+  const handleFollowToggle = async (postOwnerID) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to follow/unfollow users.');
+        return;
+      }
+      try {
+        if (followedUsers.includes(postOwnerID)) {
 
-  const handleSaveComment = (postId, commentId, content) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: post.comments.map((c) =>
-                c.id === commentId ? { ...c, content } : c
-              ),
-            }
-          : post
-      )
-    );
-    setEditingComment({});
-  };
+          await axios.put(`http://localhost:8080/user/${userID}/unfollow`, { unfollowUserID: postOwnerID });
+          setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
+        } else {
+
+          await axios.put(`http://localhost:8080/user/${userID}/follow`, { followUserID: postOwnerID });
+          setFollowedUsers([...followedUsers, postOwnerID]);
+        }
+      } catch (error) {
+        console.error('Error toggling follow state:', error);
+      }
+    };
+
+// Add comment
+  const handleAddComment = async (postId) => {
+      const userID = localStorage.getItem('userID');
+      if (!userID) {
+        alert('Please log in to comment.');
+        return;
+      }
+      const content = newComment[postId] || '';
+      if (!content.trim()) {
+        alert('Comment cannot be empty.');
+        return;
+      }
+      try {
+        const response = await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
+          userID,
+          content,
+        });
+
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId ? { ...post, comments: response.data.comments } : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId ? { ...post, comments: response.data.comments } : post
+          )
+        );
+
+        setNewComment({ ...newComment, [postId]: '' });
+      } catch (error) {
+        console.error('Error adding comment:', error);
+      }
+    };
+
+// Delete comment
+  const handleDeleteComment = async (postId, commentId) => {
+      const userID = localStorage.getItem('userID');
+      try {
+        await axios.delete(`http://localhost:8080/posts/${postId}/comment/${commentId}`, {
+          params: { userID },
+        });
+
+
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? { ...post, comments: post.comments.filter((comment) => comment.id !== commentId) }
+              : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId
+              ? { ...post, comments: post.comments.filter((comment) => comment.id !== commentId) }
+              : post
+          )
+        );
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+      }
+    };
+
+// Update Comments
+  const handleSaveComment = async (postId, commentId, content) => {
+      try {
+        const userID = localStorage.getItem('userID');
+        await axios.put(`http://localhost:8080/posts/${postId}/comment/${commentId}`, {
+          userID,
+          content,
+        });
+
+
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                ...post,
+                comments: post.comments.map((comment) =>
+                  comment.id === commentId ? { ...comment, content } : comment
+                ),
+              }
+              : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId
+              ? {
+                ...post,
+                comments: post.comments.map((comment) =>
+                  comment.id === commentId ? { ...comment, content } : comment
+                ),
+              }
+              : post
+          )
+        );
+
+        setEditingComment({});
+      } catch (error) {
+        console.error('Error saving comment:', error);
+      }
+    };
 
   const openModal = (mediaUrl) => {
     setSelectedMedia(mediaUrl);
