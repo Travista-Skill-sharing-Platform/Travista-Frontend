@@ -1,126 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
-import './community.css';
 
-function CommunityDetails() {
-  const { communityId } = useParams();
-  const navigate = useNavigate();
-  const [notices, setNotices] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [ownerId, setOwnerId] = useState(null);
-  const [communityName, setCommunityName] = useState('');
-  const [userNames, setUserNames] = useState({});
+function AddNotices() {
+    const [communityId, setCommunityId] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [userId, setUserId] = useState('');
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    setNotices([
-      { id: 1, title: 'Notice 1', content: 'Content 1', userId: '1' },
-      { id: 2, title: 'Notice 2', content: 'Content 2', userId: '2' },
-    ]);
-    setUsers([
-      { id: '1', fullname: 'User 1' },
-      { id: '2', fullname: 'User 2' },
-    ]);
-    setOwnerId('1');
-    setCommunityName('Community 1');
-  }, [communityId]);
+    useEffect(() => {
+        const storedCommunityId = localStorage.getItem('selectedCommunityId');
+        const storedUserId = localStorage.getItem('userID');
+        if (storedCommunityId) {
+            setCommunityId(storedCommunityId);
+        } else {
+            alert('No community ID found in local storage!');
+        }
+        if (storedUserId) {
+            setUserId(storedUserId);
+        } else {
+            alert('No user ID found in local storage!');
+        }
+    }, []);
 
-  useEffect(() => {
-    const fetchUserNames = () => {
-      const userNamesMap = { '1': 'User 1', '2': 'User 2' };
-      setUserNames(userNamesMap);
+    const handleAddNotice = async () => {
+        if (!communityId) {
+            alert('Community ID is required!');
+            return;
+        }
+        if (!userId) {
+            alert('User ID is required!');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/communities/${communityId}/notices`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, content, userId }), // Include userId in the request body
+            });
+
+            if (response.ok) {
+                alert('Notice added successfully!');
+                setTitle('');
+                setContent('');
+                navigate(`/communityDetails/${communityId}`);
+            } else if (response.status === 404) {
+                alert('Community not found! Please check the community ID.');
+            } else {
+                alert('Failed to add notice.');
+            }
+        } catch (error) {
+            console.error('Error adding notice:', error);
+            alert('An error occurred while adding the notice.');
+        }
     };
-    if (notices.length > 0) {
-      fetchUserNames();
-    }
-  }, [notices]);
 
-  const userId = '1';
-
-  const handleDeleteNotice = (noticeId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this notice?");
-    if (!confirmDelete) return;
-
-    setNotices((prevNotices) => prevNotices.filter((notice) => notice.id !== noticeId));
-    alert("Notice deleted successfully.");
-  };
-
-  return (
-    <div>
-      <NavBar />
-      <div className='continer_full'>
-        <div className='continer'>
-          <div className='com_fill_card'>
-            <div className='com_card_hed'>
-              <p className='com_name'>{communityName || 'Loading...'}</p>
-              <div className='com_btn'>
-                <button
-                  className='upbtn'
-                  onClick={() => {
-                    localStorage.setItem('selectedCommunityId', communityId);
-                    navigate(`/addNoties/${communityId}`);
-                  }}
-                >
-                  Add Notice
-                </button>
-                {userId && ownerId && userId === ownerId ? (
-                  <button
-                    className='upbtn'
-                    onClick={() => {
-                      localStorage.setItem('selectedCommunityId', communityId);
-                      navigate(`/communityUsers/${communityId}`);
-                    }}
-                  >
-                    Add Users
-                  </button>
-                ) : ownerId === null ? (
-                  <p>Loading community details...</p>
-                ) : (
-                  <p></p>
-                )}
-              </div>
-            </div>
-            <div className='com_con_card_fill'>
-              <div className='com_data_card'>
-                <p className='names'>Notices</p>
-                <div className='com_data_card_in'>
-                  {notices.length > 0 ? (
-                    notices.map((notice) => (
-                      <div key={notice.id} className="notice_card">
-                        <h4 className='tit_not'>{notice.title}</h4>
-                        <p className='tit_per'>{notice.content}</p>
-                        <p className='tit_user'>Posted by: {userNames[notice.userId] || 'Loading...'}</p>
-                        {userId && notice.userId && userId === notice.userId && (
-                          <div className='action_con_Card_q'>
-                            <button className='dltbn' onClick={() => handleDeleteNotice(notice.id)}>Delete</button>
-                            <button className='upbtn' onClick={() => navigate(`/updateNoties/${notice.id}`)}>Update</button>
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <p>No notices available.</p>
-                  )}
-                </div>
-              </div>
-              <div className='com_data_card'>
-                <p className='names'>Users</p>
-                {users.length > 0 ? (
-                  users.map((user) => (
-                    <div className='user_card' key={user.id} >
-                      <p>{user.fullname}</p>
+    return (
+        <div>
+            <NavBar />
+            <div className='continer_full'>
+                <div className='continer'>
+                    <div className='continSection'>
+                        <div className="from_continer">
+                            <p className="Auth_heading">Add Notice to Community</p>
+                            <div className='from_data'>
+                                <div className="Auth_formGroup">
+                                    <label className="Auth_label">Title</label>
+                                    <input
+                                        type="text"
+                                        className="Auth_input"
+                                        placeholder="Title"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+                                </div>
+                                <div  className="Auth_formGroup">
+                                    <label className="Auth_label">Content</label>
+                                    <textarea
+                                     className="Auth_input"
+                                        placeholder="Content"
+                                        value={content}
+                                        onChange={(e) => setContent(e.target.value)}
+                                        rows={5}
+                                    />
+                                </div>
+                                <button className="Auth_button" onClick={handleAddNotice}>Add Notice</button>
+                            </div>
+                        </div>
                     </div>
-                  ))
-                ) : (
-                  <p>No users in this community.</p>
-                )}
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
-export default CommunityDetails;
+export default AddNotices;
