@@ -28,7 +28,44 @@ function UpdateQuest() {
       const { name, value } = e.target;
       setQuiz({ ...quiz, [name]: value });
     };
-    
+
+     const handlePairChange = (index, field, value) => {
+        const updatedPairs = [...quiz.questionAnswerPairs];
+        updatedPairs[index][field] = value;
+        setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
+      };
+
+      const addQuestionAnswerPair = () => {
+        setQuiz({
+          ...quiz,
+          questionAnswerPairs: [...quiz.questionAnswerPairs, { question: '', answer: '' }],
+        });
+      };
+
+      const removeQuestionAnswerPair = (index) => {
+        const updatedPairs = quiz.questionAnswerPairs.filter((_, i) => i !== index);
+        setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await fetch(`http://localhost:8080/quizzes/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(quiz),
+          });
+          if (response.ok) {
+            alert('Quiz updated successfully!');
+            navigate('/allQuest');
+          } else {
+            alert('Failed to update quiz.');
+          }
+        } catch (error) {
+          console.error('Error updating quiz:', error);
+        }
+      };
+
 return (
     <div >
       <NavBar />
