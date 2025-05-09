@@ -10,6 +10,25 @@ function UpdateQuest() {
     description: '',
     questionAnswerPairs: [{ question: '', answer: '' }],
   });
+
+  useEffect(() => {
+      const fetchQuiz = async () => {
+        try {
+          const response = await fetch(`http://localhost:8080/quizzes/${id}`);
+          const data = await response.json();
+          setQuiz(data);
+        } catch (error) {
+          console.error('Error fetching quiz:', error);
+        }
+      };
+      fetchQuiz();
+    }, [id]);
+
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setQuiz({ ...quiz, [name]: value });
+    };
+    
 return (
     <div >
       <NavBar />
