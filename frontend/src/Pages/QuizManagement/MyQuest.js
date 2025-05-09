@@ -7,7 +7,7 @@ function MyQuest() {
     const navigate = useNavigate();
     const userID = localStorage.getItem('userID');
 
-useEffect(() => {
+    useEffect(() => {
         const fetchQuizzes = async () => {
             try {
                 const response = await fetch('http://localhost:8080/quizzes');
@@ -42,8 +42,7 @@ useEffect(() => {
         }
     };
 
-
- return (
+    return (
         <div>
             <NavBar />
             <div className='continer_full'>

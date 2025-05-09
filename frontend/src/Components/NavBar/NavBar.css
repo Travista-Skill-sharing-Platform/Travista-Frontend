@@ -52,9 +52,9 @@
   color: #00885c;
 }
 .logoo {
-  width: 40px;
-  height: 40px;
-  background-image: url("./img/logo.png");
-  background-size: contain;
-  background-position: center;
+  /* set these to the logo.png's real pixel dimensions */
+  width: 200px;   
+  height: 50px;   
+  background: url("./img/logo.png") center/contain no-repeat;
 }
+

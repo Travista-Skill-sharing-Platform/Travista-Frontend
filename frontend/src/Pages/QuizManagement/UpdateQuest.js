@@ -12,61 +12,61 @@ function UpdateQuest() {
   });
 
   useEffect(() => {
-      const fetchQuiz = async () => {
-        try {
-          const response = await fetch(`http://localhost:8080/quizzes/${id}`);
-          const data = await response.json();
-          setQuiz(data);
-        } catch (error) {
-          console.error('Error fetching quiz:', error);
-        }
-      };
-      fetchQuiz();
-    }, [id]);
-
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setQuiz({ ...quiz, [name]: value });
+    const fetchQuiz = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/quizzes/${id}`);
+        const data = await response.json();
+        setQuiz(data);
+      } catch (error) {
+        console.error('Error fetching quiz:', error);
+      }
     };
+    fetchQuiz();
+  }, [id]);
 
-     const handlePairChange = (index, field, value) => {
-        const updatedPairs = [...quiz.questionAnswerPairs];
-        updatedPairs[index][field] = value;
-        setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
-      };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setQuiz({ ...quiz, [name]: value });
+  };
 
-      const addQuestionAnswerPair = () => {
-        setQuiz({
-          ...quiz,
-          questionAnswerPairs: [...quiz.questionAnswerPairs, { question: '', answer: '' }],
-        });
-      };
+  const handlePairChange = (index, field, value) => {
+    const updatedPairs = [...quiz.questionAnswerPairs];
+    updatedPairs[index][field] = value;
+    setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
+  };
 
-      const removeQuestionAnswerPair = (index) => {
-        const updatedPairs = quiz.questionAnswerPairs.filter((_, i) => i !== index);
-        setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
-      };
+  const addQuestionAnswerPair = () => {
+    setQuiz({
+      ...quiz,
+      questionAnswerPairs: [...quiz.questionAnswerPairs, { question: '', answer: '' }],
+    });
+  };
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const response = await fetch(`http://localhost:8080/quizzes/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(quiz),
-          });
-          if (response.ok) {
-            alert('Quiz updated successfully!');
-            navigate('/allQuest');
-          } else {
-            alert('Failed to update quiz.');
-          }
-        } catch (error) {
-          console.error('Error updating quiz:', error);
-        }
-      };
+  const removeQuestionAnswerPair = (index) => {
+    const updatedPairs = quiz.questionAnswerPairs.filter((_, i) => i !== index);
+    setQuiz({ ...quiz, questionAnswerPairs: updatedPairs });
+  };
 
-return (
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8080/quizzes/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quiz),
+      });
+      if (response.ok) {
+        alert('Quiz updated successfully!');
+        navigate('/allQuest');
+      } else {
+        alert('Failed to update quiz.');
+      }
+    } catch (error) {
+      console.error('Error updating quiz:', error);
+    }
+  };
+
+  return (
     <div >
       <NavBar />
       <div className='continer_full'>

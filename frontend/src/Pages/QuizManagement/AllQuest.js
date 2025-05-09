@@ -7,51 +7,51 @@ function AllQuest() {
     const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
 
-     useEffect(() => {
-            const fetchQuizzes = async () => {
-                try {
-                    const response = await fetch('http://localhost:8080/quizzes');
-                    const data = await response.json();
-                    setQuizzes(data);
-                } catch (error) {
-                    console.error('Error fetching quizzes:', error);
-                }
-            };
-            fetchQuizzes();
-        }, []);
+    useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/quizzes');
+                const data = await response.json();
+                setQuizzes(data);
+            } catch (error) {
+                console.error('Error fetching quizzes:', error);
+            }
+        };
+        fetchQuizzes();
+    }, []);
 
     return (
-            <div >
-                <NavBar />
-                <div className='continer_full'>
-                    <div className='continer'>
-                        <div className='create_post' onClick={() => (window.location.href = '/addQuest')}>
-                            <IoIosCreate />
-                        </div>
-                        <div className='create_post2' onClick={() => (window.location.href = '/myQuest')}>
-                            <PiUserFocusFill />
-                        </div>
-                        <div className='quiz_concard'>
-                            {quizzes.length > 0 ? (
-                                quizzes.map((quiz) => (
-                                    <div key={quiz.id} className="quiz_card">
-                                        <h3 className='qiz_tit'>{quiz.title}</h3>
-                                        <p className='qiz_dis'>{quiz.description}</p>
-                                        <button className='quz_btn' onClick={() => navigate(`/attemptQuest/${quiz.id}`)}>Attempt Quiz</button>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className='not_found_box'>
-                                    <div className='not_found_img'></div>
-                                    <p className='not_found_msg'>No Quest found. Please create a new Quest.</p>
-                                    <button className='not_found_btn' onClick={() => (window.location.href = '/addQuest')}>Create Quest</button>
+        <div >
+            <NavBar />
+            <div className='continer_full'>
+                <div className='continer'>
+                    <div className='create_post' onClick={() => (window.location.href = '/addQuest')}>
+                        <IoIosCreate />
+                    </div>
+                    <div className='create_post2' onClick={() => (window.location.href = '/myQuest')}>
+                        <PiUserFocusFill />
+                    </div>
+                    <div className='quiz_concard'>
+                        {quizzes.length > 0 ? (
+                            quizzes.map((quiz) => (
+                                <div key={quiz.id} className="quiz_card">
+                                    <h3 className='qiz_tit'>{quiz.title}</h3>
+                                    <p className='qiz_dis'>{quiz.description}</p>
+                                    <button className='quz_btn' onClick={() => navigate(`/attemptQuest/${quiz.id}`)}>Attempt Quiz</button>
                                 </div>
-                            )}
-                        </div>
+                            ))
+                        ) : (
+                            <div className='not_found_box'>
+                                <div className='not_found_img'></div>
+                                <p className='not_found_msg'>No Quest found. Please create a new Quest.</p>
+                                <button className='not_found_btn' onClick={() => (window.location.href = '/addQuest')}>Create Quest</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+}
 
-    export default AllQuest;
+export default AllQuest;
