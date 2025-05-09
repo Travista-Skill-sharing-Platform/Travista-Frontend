@@ -48,10 +48,23 @@ function AllPost() {
     fetchFollowedUsers();
   }, []);
 
-  const handleDelete = (postId) => {
-    setPosts(posts.filter((post) => post.id !== postId));
-    setFilteredPosts(filteredPosts.filter((post) => post.id !== postId));
-  };
+// Delete Comment
+   const handleDelete = async (postId) => {
+      const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+      if (!confirmDelete) {
+        return;
+      }
+
+      try {
+        await axios.delete(`http://localhost:8080/posts/${postId}`);
+        alert('Post deleted successfully!');
+        setPosts(posts.filter((post) => post.id !== postId));
+        setFilteredPosts(filteredPosts.filter((post) => post.id !== postId));
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        alert('Failed to delete post.');
+      }
+    };
 
   const handleUpdate = (postId) => {
     navigate(`/updatePost/${postId}`);
@@ -153,18 +166,34 @@ function AllPost() {
       }
     };
 
-  const handleDeleteComment = (postId, commentId) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: post.comments.filter((c) => c.id !== commentId),
-            }
-          : post
-      )
-    );
-  };
+// Delete comment
+  const handleDeleteComment = async (postId, commentId) => {
+      const userID = localStorage.getItem('userID');
+      try {
+        await axios.delete(`http://localhost:8080/posts/${postId}/comment/${commentId}`, {
+          params: { userID },
+        });
+
+
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? { ...post, comments: post.comments.filter((comment) => comment.id !== commentId) }
+              : post
+          )
+        );
+
+        setFilteredPosts((prevFilteredPosts) =>
+          prevFilteredPosts.map((post) =>
+            post.id === postId
+              ? { ...post, comments: post.comments.filter((comment) => comment.id !== commentId) }
+              : post
+          )
+        );
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+      }
+    };
 
   const handleSaveComment = (postId, commentId, content) => {
     setPosts((prev) =>
