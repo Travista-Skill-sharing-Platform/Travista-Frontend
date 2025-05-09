@@ -13,8 +13,8 @@ Modal.setAppElement('#root');
 
 function AllPost() {
   const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  const [postOwners, setPostOwners] = useState({});
+  const [filteredPosts, setFilteredPosts] = useState([]); // For filtering posts
+  const [postOwners, setPostOwners] = useState({}); // Map of userID to fullName
   const [showMyPosts, setShowMyPosts] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -25,11 +25,40 @@ function AllPost() {
   const loggedInUserID = '1';
 
   useEffect(() => {
-    
-    const dummyPosts = [];
-    setPosts(dummyPosts);
-    setFilteredPosts(dummyPosts);
-  }, []);
+      // Fetch all posts from the backend
+      const fetchPosts = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/posts');
+          setPosts(response.data);
+          setFilteredPosts(response.data); // Initially show all posts
+
+          // Fetch post owners' names
+          const userIDs = [...new Set(response.data.map((post) => post.userID))]; // Get unique userIDs
+          const ownerPromises = userIDs.map((userID) =>
+            axios.get(`http://localhost:8080/user/${userID}`)
+              .then((res) => ({
+                userID,
+                fullName: res.data.fullname,
+              }))
+              .catch((error) => {
+                console.error(`Error fetching user details for userID ${userID}:`, error);
+                return { userID, fullName: 'Anonymous' };
+              })
+          );
+          const owners = await Promise.all(ownerPromises);
+          const ownerMap = owners.reduce((acc, owner) => {
+            acc[owner.userID] = owner.fullName;
+            return acc;
+          }, {});
+          console.log('Post Owners Map:', ownerMap); // Debug log to verify postOwners map
+          setPostOwners(ownerMap);
+        } catch (error) {
+          console.error('Error fetching posts:', error); // Log error for fetching posts
+        }
+      };
+
+      fetchPosts();
+    }, []);
 
   const handleDelete = (postId) => {
     setPosts(posts.filter((post) => post.id !== postId));
