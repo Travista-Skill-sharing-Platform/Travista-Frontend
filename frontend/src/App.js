@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router";
 import { useNavigate } from "react-router-dom";
-import AddNewPost from "./Pages/PostManagement/AddNewPost";
-
 import UserLogin from "./Pages/UserManagement/UserLogin";
 import UserRegister from "./Pages/UserManagement/UserRegister";
 import UpdateUserProfile from "./Pages/UserManagement/UpdateUserProfile";
 
+import AddNewPost from "./Pages/PostManagement/AddNewPost";
+import AllPost from "./Pages/PostManagement/AllPost";
+import UpdatePost from "./Pages/PostManagement/UpdatePost";
 
 function ProtectedRoute({ children }) {
   const userID = localStorage.getItem("userID");
@@ -40,7 +41,7 @@ function App() {
       <React.Fragment>
         <Routes>
 
-        {/* Public Routes */}
+          {/* Public Routes */}
           <Route path="/" element={<UserLogin />} />
           <Route path="/register" element={<UserRegister />} />
           {/* Protected Routes */}
@@ -62,20 +63,20 @@ function App() {
           />
           <Route
             path="/allPost"
-             element={
-               <ProtectedRoute>
-                 <AllPost />
-               </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/updatePost/:id"
-              element={
-                <ProtectedRoute>
-                  <UpdatePost />
-                </ProtectedRoute>
-              }
-            />
+            element={
+              <ProtectedRoute>
+                <AllPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updatePost/:id"
+            element={
+              <ProtectedRoute>
+                <UpdatePost />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </React.Fragment>
     </div>
