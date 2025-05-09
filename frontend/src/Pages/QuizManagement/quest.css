@@ -79,3 +79,197 @@ textarea:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
 }
+.quiz_card_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+.qiz_tit {
+  font-size: 25px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.qiz_dis {
+  font-size: 15px;
+  color: grey;
+  text-transform: capitalize;
+}
+.quz_btn {
+  background-color: #00885c;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 6px 16px;
+  font-size: 18px;
+  border-radius: 3px;
+  font-weight: 500;
+  color: white;
+  border: 1px solid #00885c;
+}
+.qus_open_name {
+  font-size: 25px;
+  width: 100%;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+.qus_open_dis {
+  font-size: 17px;
+  width: 100%;
+  text-transform: capitalize;
+  font-weight: 400;
+  color: grey;
+}
+.quiz_main {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.quiz_textarea {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 17px;
+  border-radius: 3px;
+}
+input:focus {
+  outline: none;
+  border: 1px solid grey !important;
+}
+textarea:focus {
+  outline: none;
+  border: 1px solid grey !important;
+  resize: none;
+}
+.resalt_con {
+  width: 80%;
+  padding: 8px 0;
+  border-radius: 3px;
+  background-color: #00885dd1;
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  position: fixed;
+  top: 120px;
+  z-index: 9999;
+  left: 10%;
+}
+.dlttbtn {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.q_pack_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+}
+.q_pack_card_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+.Add_button {
+  padding: 5px 15px;
+  background: linear-gradient(90deg, #1bd6b1 0%, #00885c 100%);
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.flzone {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.Auth_label_main {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 29px;
+  text-transform: capitalize;
+}
+.ansmain {
+  font-size: 17px;
+}
+.q_Cardd{
+  width: 100%;
+  padding: 5px;
+
+}
+.withset{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.action_con_Card_q{
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
+  display: flex;
+  gap: 15px;
+}
+.upbtn {
+  background-color: #00885c;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 3px 16px;
+  font-size: 15px;
+  border-radius: 3px;
+  font-weight: 500;
+  color: white;
+  border: 1px solid #00885c;
+}
+.dltbn {
+  background-color: #ff0000;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 3px 16px;
+  font-size: 15px;
+  border-radius: 3px;
+  font-weight: 500;
+  color: white;
+  border: 1px solid #ff0000;
+}
+.dltbn_new {
+  background-color: #ff0000;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 3px 16px;
+  font-size: 15px;
+  border-radius: 3px;
+  font-weight: 500;
+  color: white;
+  margin-left: auto;
+  border: 1px solid #ff0000;
+}

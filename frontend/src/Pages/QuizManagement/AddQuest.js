@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './quest.css';
 import NavBar from '../../Components/NavBar/NavBar';
-
 function AddQuest() {
   const [quiz, setQuiz] = useState({
     title: '',
@@ -27,34 +26,34 @@ function AddQuest() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-        const userID = localStorage.getItem('userID'); // Fetch userID from local storage
-        if (!userID) {
-          alert('User not logged in!');
-          return;
-        }
+    const userID = localStorage.getItem('userID'); // Fetch userID from local storage
+    if (!userID) {
+      alert('User not logged in!');
+      return;
+    }
 
-        try {
-          const response = await fetch('http://localhost:8080/quizzes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...quiz, userID }),
-          });
-          if (response.ok) {
-            alert('Quiz added successfully!');
-            setQuiz({ title: '', description: '', questionAnswerPairs: [{ question: '', answer: '' }] });
-            window.location.href = '/myQuest';
-          } else {
-            alert('Failed to add quiz.');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      };
+    try {
+      const response = await fetch('http://localhost:8080/quizzes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...quiz, userID }),
+      });
+      if (response.ok) {
+        alert('Quiz added successfully!');
+        setQuiz({ title: '', description: '', questionAnswerPairs: [{ question: '', answer: '' }] });
+        window.location.href = '/myQuest';
+      } else {
+        alert('Failed to add quiz.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <div>
+    <div >
       <NavBar />
       <div className='continer_full'>
         <div className='continer'>

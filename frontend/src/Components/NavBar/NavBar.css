@@ -1,0 +1,60 @@
+.nav_con {
+  width: 1440px;
+  margin: 0 auto ;
+  background-color: white;
+}
+.navbar {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 1000000;
+  padding: 15px 0;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+.nav_item_set {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.nav_item_icon {
+  font-size: 25px;
+  color: #555555;
+  cursor: pointer;
+}
+.nav_item_icon_noty {
+  font-size: 25px;
+  color: #00885c;
+  cursor: pointer;
+}
+.nav_bar_item {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+}
+.nav_item_icon:hover {
+  color: #00885c;
+}
+.nav_item_z {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 16px;
+  cursor: pointer;
+}
+.nav_item_z_nav {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #00885c;
+}
+.logoo {
+  /* set these to the logo.png's real pixel dimensions */
+  width: 200px;   
+  height: 50px;   
+  background: url("./img/logo.png") center/contain no-repeat;
+}
+

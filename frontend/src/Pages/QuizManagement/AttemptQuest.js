@@ -57,7 +57,7 @@ function AttemptQuest() {
                 body: JSON.stringify(attemptData),
             });
             if (response.ok) {
-                alert(`Attempt submitted successfully! Your Score: ${score}%`);
+                alert(`Attempt submitted successfully! Your Score: ${score}%`); 
                 const notificationData = {
                     userID,
                     message: `You have completed the quiz with a score of ${score}%`,
