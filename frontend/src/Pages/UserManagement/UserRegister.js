@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Logo from "./../../Components/NavBar/img/logo.png";
 
+import { IoMdAdd } from "react-icons/io";
 function UserRegister() {
     const [formData, setFormData] = useState({
         fullname: '',

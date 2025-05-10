@@ -86,6 +86,7 @@ function AddNewPost() {
   return (
     <div>
       <NavBar />
+
       <div  className='continer_full'>
         <div className='continer'>
 
@@ -146,6 +147,7 @@ function AddNewPost() {
         </div>
       </div>
     </div>
+
   );
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
+
 function UpdatePost() {
   const { id } = useParams(); // Get the post ID from the URL
   const navigate = useNavigate();
@@ -137,7 +138,6 @@ function UpdatePost() {
 
   return (
     <div>
-      <NavBar />
       <div className='continer_full'>
         <div className='continer'>
 

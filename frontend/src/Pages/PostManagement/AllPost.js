@@ -77,6 +77,7 @@ function AllPost() {
     fetchFollowedUsers();
   }, []);
 
+//delete post
   const handleDelete = async (postId) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this post?');
     if (!confirmDelete) {
@@ -98,6 +99,7 @@ function AllPost() {
     navigate(`/updatePost/${postId}`);
   };
 
+//update post
   const handleMyPostsToggle = () => {
     if (showMyPosts) {
 
